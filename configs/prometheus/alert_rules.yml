@@ -7,12 +7,15 @@ groups:
      description: A Prometheus target has disappeared. An exporter might be crashed.
     labels:
       severity: critical
+      route_proj: true
+      route_infra: true
   - alert: Prometheus AlertManager config not synced
     expr: 'count(count_values("config_hash", alertmanager_config_hash)) > 1'
     annotations:
      description: Configurations of AlertManager cluster instances are out of sync
     labels:
       severity: warning
+      route_infra: true
   - alert: Prometheus target scraping slow
     expr: 'prometheus_target_interval_length_seconds{quantile="0.9"} > 60'
     annotations:
@@ -28,6 +31,7 @@ groups:
      description: Node memory is filling up (< 10% left)
     labels:
       severity: warning
+      route_proj: true
     for: 2m
   - alert: Host out of disk space
     expr: '(node_filesystem_avail_bytes * 100) / node_filesystem_size_bytes < 10 and ON (instance, device, mountpoint) node_filesystem_readonly == 0'
